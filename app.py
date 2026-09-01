@@ -1,10 +1,9 @@
-```python
+
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 import os
 from functools import wraps
 from datetime import datetime
-
 
 app = Flask(__name__)
 
@@ -22,7 +21,6 @@ ADMIN_PASSWORD = os.environ.get(
     "1234"
 )
 
-
 # ==================================================
 # دیتابیس
 # ==================================================
@@ -31,16 +29,12 @@ DATABASE = "messages.db"
 
 
 def get_db():
-
     connection = sqlite3.connect(DATABASE)
-
     connection.row_factory = sqlite3.Row
-
     return connection
 
 
 def init_db():
-
     connection = get_db()
 
     connection.execute("""
@@ -52,11 +46,10 @@ def init_db():
     """)
 
     connection.commit()
-
     connection.close()
 
 
-# ساخت دیتابیس هنگام اجرای برنامه
+# ساخت جدول هنگام اجرای برنامه
 init_db()
 
 
@@ -70,7 +63,6 @@ def login_required(function):
     def wrapper(*args, **kwargs):
 
         if not session.get("admin_logged_in"):
-
             return redirect(url_for("admin_login"))
 
         return function(*args, **kwargs)
@@ -84,25 +76,21 @@ def login_required(function):
 
 @app.route("/")
 def home():
-
     return render_template("index.html")
 
 
 @app.route("/questions")
 def questions():
-
     return render_template("questions.html")
 
 
 @app.route("/question2")
 def question2():
-
     return render_template("question2.html")
 
 
 @app.route("/final")
 def final():
-
     return render_template("final.html")
 
 
@@ -116,7 +104,6 @@ def send_message():
     message = request.form.get("message", "").strip()
 
     if not message:
-
         return redirect(url_for("final"))
 
     connection = get_db()
@@ -133,7 +120,6 @@ def send_message():
     )
 
     connection.commit()
-
     connection.close()
 
     return render_template(
@@ -150,7 +136,6 @@ def send_message():
 def admin_login():
 
     if session.get("admin_logged_in"):
-
         return redirect(url_for("admin_panel"))
 
     if request.method == "POST":
@@ -199,7 +184,7 @@ def admin_panel():
 
 
 # ==================================================
-# DELETE MESSAGE
+# حذف پیام
 # ==================================================
 
 @app.route("/admin/delete/<int:message_id>", methods=["POST"])
@@ -217,14 +202,13 @@ def delete_message(message_id):
     )
 
     connection.commit()
-
     connection.close()
 
     return redirect(url_for("admin_panel"))
 
 
 # ==================================================
-# LOGOUT
+# خروج از پنل
 # ==================================================
 
 @app.route("/admin/logout")
@@ -236,7 +220,7 @@ def admin_logout():
 
 
 # ==================================================
-# اجرای محلی
+# اجرای برنامه
 # ==================================================
 
 if __name__ == "__main__":
