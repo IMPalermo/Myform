@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>پنل پیام‌ها</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+{% if not logged_in %}
+
+    <div class="card">
+
+        <h1>
+            🔐 پنل خصوصی
+        </h1>
+
+        <p>
+            برای دیدن پیام‌ها رمز عبور را وارد کن.
+        </p>
+
+
+        <form method="POST">
+
+            <input
+                type="password"
+                name="password"
+                placeholder="رمز عبور"
+                required
+                class="admin-input"
+            >
+
+
+            <button
+                type="submit"
+                class="admin-button">
+
+                ورود
+
+            </button>
+
+        </form>
+
+
+        {% if error %}
+
+            <p class="error-message">
+                {{ error }}
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+{% else %}
+
+
+    <div class="admin-container">
+
+
+        <div class="admin-header">
+
+            <div>
+
+                <h1>
+                    💌 پیام‌ها
+                </h1>
+
+                <p>
+                    پیام‌هایی که برات ارسال شده
+                </p>
+
+            </div>
+
+
+            <a
+                href="/admin/logout"
+                class="logout-button">
+
+                خروج
+
+            </a>
+
+        </div>
+
+
+
+        {% if messages %}
+
+
+            {% for message in messages %}
+
+                <div class="message-card">
+
+
+                    <div class="message-top">
+
+                        <span>
+                            پیام #{{ message["id"] }}
+                        </span>
+
+                        <span>
+                            {{ message["created_at"] }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="message-content">
+
+                        {{ message["message"] }}
+
+                    </div>
+
+
+                    <form
+                        method="POST"
+                        action="/admin/delete/{{ message['id'] }}">
+
+                        <button
+                            type="submit"
+                            class="delete-button"
+                            onclick="return confirm('این پیام حذف شود؟')">
+
+                            حذف 🗑️
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="empty-message">
+
+                هنوز پیامی دریافت نکردی. 💭
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+{% endif %}
+
+
+</body>
+
+</html>
