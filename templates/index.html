@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>پرسشنامه</title>
+
+    <!-- وصل کردن CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- فونت فارسی -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>
+            خوش آمدید 👋
+        </h1>
+
+        <p>
+            به پرسشنامه ما خوش آمدید.
+            <br>
+            لطفاً چند دقیقه از وقت خود را برای پاسخ دادن به سوالات اختصاص دهید.
+        </p>
+
+        <a href="/questions" class="start-button">
+            شروع
+        </a>
+
+    </div>
+
+</body>
+
+</html>
