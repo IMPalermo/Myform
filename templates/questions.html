@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>یک سؤال مهم</title>
+
+    <!-- وصل کردن CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- فونت فارسی -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>
+            یک سؤال مهم 👀
+        </h1>
+
+        <p>
+            ما برای رفتن به صفحه بعد به یک آدم خوشگل نیاز داریم!
+            <br>
+            آیا شما خوشگل هستید؟ 😎
+        </p>
+
+        <div class="buttons">
+
+            <!-- آره → سوال دوم -->
+            <a href="/question2"
+               class="answer-button yes-button">
+
+                آره 😎
+
+            </a>
+
+            <!-- نه -->
+            <button
+                class="answer-button no-button"
+                id="noButton">
+
+                نه 😐
+
+            </button>
+
+        </div>
+
+        <!-- پیام بعد از محو شدن دکمه -->
+        <p
+            class="message"
+            id="message">
+        </p>
+
+    </div>
+
+
+    <script>
+
+        const noButton =
+            document.getElementById("noButton");
+
+        const message =
+            document.getElementById("message");
+
+        let clicks = 0;
+
+
+        noButton.addEventListener("click", function () {
+
+            clicks++;
+
+
+            if (clicks === 1) {
+
+                noButton.style.transform =
+                    "scale(0.8)";
+
+            }
+
+            else if (clicks === 2) {
+
+                noButton.style.transform =
+                    "scale(0.6)";
+
+            }
+
+            else if (clicks === 3) {
+
+                noButton.style.transform =
+                    "scale(0.4)";
+
+            }
+
+            else if (clicks === 4) {
+
+                noButton.style.transform =
+                    "scale(0.2)";
+
+            }
+
+            else if (clicks >= 5) {
+
+                noButton.style.transform =
+                    "scale(0)";
+
+                noButton.style.opacity =
+                    "0";
+
+                noButton.style.pointerEvents =
+                    "none";
+
+                message.innerHTML =
+                    "ای بابا! بزن آره دیگه 😂<br>" +
+                    "تو واقعاً خوشگلی!";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
