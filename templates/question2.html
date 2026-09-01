@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>واقعاً مطمئنی؟</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>
+            واقعاً مطمئنی؟ 👀
+        </h1>
+
+        <p>
+            یعنی واقعاً فکر می‌کنی خوشگلی؟
+            <br>
+            یک بار دیگه خوب فکر کن! 😏
+        </p>
+
+        <div class="buttons">
+
+            <!-- آره → صفحه آخر -->
+            <a href="/final"
+               class="answer-button yes-button">
+
+                آره 😎
+
+            </a>
+
+            <!-- نه -->
+            <button
+                class="answer-button no-button"
+                id="noButton">
+
+                نه 😐
+
+            </button>
+
+        </div>
+
+        <!-- پیام -->
+        <p
+            class="message"
+            id="message">
+        </p>
+
+    </div>
+
+
+    <script>
+
+        const noButton =
+            document.getElementById("noButton");
+
+        const message =
+            document.getElementById("message");
+
+        let clicks = 0;
+
+
+        noButton.addEventListener("click", function () {
+
+            clicks++;
+
+
+            if (clicks === 1) {
+
+                noButton.style.transform =
+                    "scale(0.8)";
+
+            }
+
+            else if (clicks === 2) {
+
+                noButton.style.transform =
+                    "scale(0.6)";
+
+            }
+
+            else if (clicks === 3) {
+
+                noButton.style.transform =
+                    "scale(0.4)";
+
+            }
+
+            else if (clicks === 4) {
+
+                noButton.style.transform =
+                    "scale(0.2)";
+
+            }
+
+            else if (clicks >= 5) {
+
+                noButton.style.transform =
+                    "scale(0)";
+
+                noButton.style.opacity =
+                    "0";
+
+                noButton.style.pointerEvents =
+                    "none";
+
+                message.innerHTML =
+                    "... مانیا جان تو واقعاً خوشگلی! 😂<br>" +
+                    "میشه انقدر روی «نه» نزنی!؟ ❤️";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
