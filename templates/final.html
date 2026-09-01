@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>برای تو ❤️</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+    <div class="card final-card">
+
+
+        <h1>
+            مرسی که انقدر خوشگلی ❤️
+        </h1>
+
+
+        <p>
+
+            مانیا جان، هر چی دوست داری می‌تونی
+            به من اینجا بگی.
+
+            <br>
+
+            هر وقت دلت خواست می‌تونی برگردی
+            و برام بنویسی. 💌
+
+        </p>
+
+
+        {% if sent %}
+
+            <div class="success-message">
+
+                پیامت با موفقیت برام فرستاده شد ❤️
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="message-box">
+
+
+            <label for="userMessage">
+
+                حرفی که می‌خوای بهم بگی:
+
+            </label>
+
+
+            <form
+                action="/send-message"
+                method="POST">
+
+
+                <textarea
+                    id="userMessage"
+                    name="message"
+                    placeholder="هر چی تو دلت هست اینجا بنویس..."
+                    required></textarea>
+
+
+                <button type="submit">
+
+                    ارسال 💌
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
