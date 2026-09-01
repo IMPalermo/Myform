@@ -1,3 +1,4 @@
+```python
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 import os
@@ -7,29 +8,27 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# کلید امنیتی Flask
-# بعداً وقتی سایت رو آنلاین کردیم، این مقدار رو در Environment Variable قرار می‌دیم.
+# ==================================================
+# تنظیمات امنیتی
+# ==================================================
+
 app.secret_key = os.environ.get(
     "SECRET_KEY",
     "dev-secret-key-change-this"
 )
 
-
-# رمز ورود به پنل مدیریت
-# برای تست روی کامپیوتر:
 ADMIN_PASSWORD = os.environ.get(
     "ADMIN_PASSWORD",
     "1234"
 )
 
 
-# اسم دیتابیس
+# ==================================================
+# دیتابیس
+# ==================================================
+
 DATABASE = "messages.db"
 
-
-# --------------------------------------------------
-# اتصال به دیتابیس
-# --------------------------------------------------
 
 def get_db():
 
@@ -39,10 +38,6 @@ def get_db():
 
     return connection
 
-
-# --------------------------------------------------
-# ساخت دیتابیس
-# --------------------------------------------------
 
 def init_db():
 
@@ -61,9 +56,13 @@ def init_db():
     connection.close()
 
 
-# --------------------------------------------------
-# محافظت از صفحه Admin
-# --------------------------------------------------
+# ساخت دیتابیس هنگام اجرای برنامه
+init_db()
+
+
+# ==================================================
+# محافظت از Admin
+# ==================================================
 
 def login_required(function):
 
@@ -79,9 +78,9 @@ def login_required(function):
     return wrapper
 
 
-# --------------------------------------------------
-# صفحه اصلی
-# --------------------------------------------------
+# ==================================================
+# صفحات سایت
+# ==================================================
 
 @app.route("/")
 def home():
@@ -89,19 +88,11 @@ def home():
     return render_template("index.html")
 
 
-# --------------------------------------------------
-# سوال اول
-# --------------------------------------------------
-
 @app.route("/questions")
 def questions():
 
     return render_template("questions.html")
 
-
-# --------------------------------------------------
-# سوال دوم
-# --------------------------------------------------
 
 @app.route("/question2")
 def question2():
@@ -109,37 +100,27 @@ def question2():
     return render_template("question2.html")
 
 
-# --------------------------------------------------
-# صفحه نهایی
-# --------------------------------------------------
-
 @app.route("/final")
 def final():
 
     return render_template("final.html")
 
 
-# --------------------------------------------------
+# ==================================================
 # دریافت پیام
-# --------------------------------------------------
+# ==================================================
 
 @app.route("/send-message", methods=["POST"])
 def send_message():
 
     message = request.form.get("message", "").strip()
 
-
-    # اگر پیام خالی بود
     if not message:
 
         return redirect(url_for("final"))
 
-
-    # اتصال به دیتابیس
     connection = get_db()
 
-
-    # ذخیره پیام
     connection.execute(
         """
         INSERT INTO messages (message, created_at)
@@ -151,13 +132,10 @@ def send_message():
         )
     )
 
-
     connection.commit()
 
     connection.close()
 
-
-    # بعد از ارسال برگرد به صفحه نهایی
     return render_template(
         "final.html",
         sent=True
@@ -165,27 +143,19 @@ def send_message():
 
 
 # ==================================================
-# ADMIN
+# ADMIN LOGIN
 # ==================================================
-
-
-# --------------------------------------------------
-# صفحه ورود Admin
-# --------------------------------------------------
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin_login():
 
-    # اگر قبلاً وارد شده
     if session.get("admin_logged_in"):
 
         return redirect(url_for("admin_panel"))
 
-
     if request.method == "POST":
 
         password = request.form.get("password", "")
-
 
         if password == ADMIN_PASSWORD:
 
@@ -193,26 +163,23 @@ def admin_login():
 
             return redirect(url_for("admin_panel"))
 
-
         return render_template(
             "admin.html",
             error="رمز عبور اشتباه است."
         )
 
-
     return render_template("admin.html")
 
 
-# --------------------------------------------------
-# پنل پیام‌ها
-# --------------------------------------------------
+# ==================================================
+# ADMIN PANEL
+# ==================================================
 
 @app.route("/admin/messages")
 @login_required
 def admin_panel():
 
     connection = get_db()
-
 
     messages = connection.execute(
         """
@@ -222,9 +189,7 @@ def admin_panel():
         """
     ).fetchall()
 
-
     connection.close()
-
 
     return render_template(
         "admin.html",
@@ -233,16 +198,15 @@ def admin_panel():
     )
 
 
-# --------------------------------------------------
-# حذف پیام
-# --------------------------------------------------
+# ==================================================
+# DELETE MESSAGE
+# ==================================================
 
 @app.route("/admin/delete/<int:message_id>", methods=["POST"])
 @login_required
 def delete_message(message_id):
 
     connection = get_db()
-
 
     connection.execute(
         """
@@ -252,18 +216,16 @@ def delete_message(message_id):
         (message_id,)
     )
 
-
     connection.commit()
 
     connection.close()
 
-
     return redirect(url_for("admin_panel"))
 
 
-# --------------------------------------------------
-# خروج از پنل
-# --------------------------------------------------
+# ==================================================
+# LOGOUT
+# ==================================================
 
 @app.route("/admin/logout")
 def admin_logout():
@@ -273,14 +235,15 @@ def admin_logout():
     return redirect(url_for("admin_login"))
 
 
-# --------------------------------------------------
-# شروع برنامه
-# --------------------------------------------------
+# ==================================================
+# اجرای محلی
+# ==================================================
 
 if __name__ == "__main__":
 
-    init_db()
-
     app.run(
-        debug=True
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
     )
+```
